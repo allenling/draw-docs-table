@@ -7,7 +7,7 @@ Just test in  Linux env, not test for Windows.
 
 
 **Maybe in your IDE`s console, like in my eclipse, the graphic might be wrong, and i suggest you to write the graphic into a file, open that file with Vim or just cat the file,
-the graphic will be right. At least, my Ubuntu is find.**
+the graphic will be right. At least, my Ubuntu is fine.**
 
 
 Usage:
@@ -46,8 +46,8 @@ And in output:
     +---+---------------------------------------------------------------------+--------------------+
 
 
-Also about unicode, result is find in Vim and terminal, but when copy graphic into your IDE or other
-Editors, things maybe a little different.
+Also about unicode, result is fine in Vim and terminal, but when copy graphic into your IDE or other
+Editors, things might be a little awkward.
 
 
 .. code-block:: python
