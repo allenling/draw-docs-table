@@ -14,9 +14,9 @@ Usage:
 ```python
 from doc_table import Table
 
-data = [['a', 'b', 'c', 'd', 'a line', 'easy is good', 'easy is powerful'],
-        ['column11', 'O(n^2)', 'O(n^2)', 'O(n)', 'O(1)', 'struggle with the performance in a interview!', 'column17'],
-        ['column21', 'O(nlog2n)', 'O(nlog2n)', '', 'O(1)', 'why you do not read my projects when you will fucking interview me!', 'column27']
+data = [['a', 'simple is good', 'simple is powerful'],
+        ['e', 'struggle with the performance in a interview!', 'f'],
+        ['g', 'why you do not read my projects when you will fucking interview me!', 'h']
         ]
 # just output string
 
@@ -29,19 +29,20 @@ with open('/tmp/test_gr', 'w') as f:
 
 And in output:
 
-+----------+-----------+-----------+------+--------+---------------------------------------------------------------------+------------------+
-|          +           +           +      +        +                                                                     +                  +
-| a        + b         + c         + d    + a line + easy is good                                                        + easy is powerful +
-|          +           +           +      +        +                                                                     +                  +
-+----------+-----------+-----------+------+--------+---------------------------------------------------------------------+------------------+
-|          +           +           +      +        +                                                                     +                  +
-| column11 + O(n^2)    + O(n^2)    + O(n) + O(1)   + struggle with the performance in a interview!                       + column17         +
-|          +           +           +      +        +                                                                     +                  +
-+----------+-----------+-----------+------+--------+---------------------------------------------------------------------+------------------+
-|          +           +           +      +        +                                                                     +                  +
-| column21 + O(nlog2n) + O(nlog2n) +      + O(1)   + why you do not read my projects when you will fucking interview me! + column27         +
-|          +           +           +      +        +                                                                     +                  +
-+----------+-----------+-----------+------+--------+---------------------------------------------------------------------+------------------+
++---+---------------------------------------------------------------------+--------------------+
+|   +                                                                     +                    +
+| a + simple is good                                                      + simple is powerful +
+|   +                                                                     +                    +
++---+---------------------------------------------------------------------+--------------------+
+|   +                                                                     +                    +
+| e + struggle with the performance in a interview!                       + f                  +
+|   +                                                                     +                    +
++---+---------------------------------------------------------------------+--------------------+
+|   +                                                                     +                    +
+| g + why you do not read my projects when you will fucking interview me! + h                  +
+|   +                                                                     +                    +
++---+---------------------------------------------------------------------+--------------------+
+
 
 Also support unicode
 
