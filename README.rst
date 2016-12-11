@@ -46,9 +46,9 @@ And in output:
     +---+---------------------------------------------------------------------+--------------------+
 
 
-Also support unicode
+Also about unicode, result is find in Vim and terminal, but when copy graphic into your IDE or other
+Editors, things maybe a little different.
 
-like:
 
 .. code-block:: python
 
@@ -68,6 +68,8 @@ like:
     
     with open('/tmp/test_gr1', 'w') as f:
         Table(data2).draw_to_fil(f)
+
+In Vim, graphic is fine, but in my eclipse, just like
 
 .. code-block::
 
@@ -96,4 +98,5 @@ like:
     | chúng tôidgf + 我们 + abc +
     |              +      +     +
     +--------------+------+-----+
+
 
