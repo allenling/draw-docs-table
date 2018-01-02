@@ -1,6 +1,3 @@
-# coding=utf-8
-from __future__ import unicode_literals
-from __future__ import absolute_import
 
 CELL_BOUNDARY = '+'
 ROW_BOUNDARY = '\n'
@@ -23,28 +20,39 @@ VALUE_PADDING = ' '
 class Cell(object):
 
     def __init__(self, value):
-        self.value = value
+        self.value = str(value)
         self.width = 0
         for v in self.value:
-            self.width += int(len(bytes(v.encode('utf-8'))) / 1.5) if ord(v) > 256 else len(v)
+            self.width += int(len(str(v).encode('utf-8')) / 1.5) if ord(v) > 256 else len(v)
+        return
 
 
 class Table(object):
     def __init__(self, data):
         self.data = data
         self.cells = []
+        return
+
+    def draw_cells(self):
+        cells = []
         for d in self.data:
             tmp = []
             for value in d:
                 tmp.append(Cell(value))
-            self.cells.append(tmp)
+            cells.append(tmp)
         self.column_max_width = [0 for _ in self.data[0]]
-        for row_index in range(len(self.cells)):
-            for column_index in range(len(self.cells[row_index])):
-                cell = self.cells[row_index][column_index]
+        for row_index in range(len(cells)):
+            for column_index in range(len(cells[row_index])):
+                cell = cells[row_index][column_index]
                 self.column_max_width[column_index] = max([self.column_max_width[column_index], cell.width])
+        self.cells = cells
+        return
 
-    def draw(self):
+    def draw(self, redraw=False):
+        if redraw is True:
+            self.cells = []
+        if not self.cells:
+            self.draw_cells()
         graph = ''
         row_extra_len = LEN_PADDING_LEFT + LEN_PADDING_RIGHT
         for row_index in range(len(self.cells)):
@@ -80,7 +88,8 @@ class Table(object):
         return graph
 
     def draw_to_fil(self, f):
-        f.write(self.draw().encode('utf-8'))
+        f.write(self.draw())
+        return
 
 
 def main():
@@ -89,9 +98,10 @@ def main():
             ['希尔排序', 'O(nlog2n)', 'O(nlog2n)', '', 'O(1)', '不稳定', '叫复杂']
             ]
     t = Table(data)
-    print t.draw()
+    print(t.draw())
     with open('/tmp/gr', 'w') as f:
         t.draw_to_fil(f)
+
 
 if __name__ == '__main__':
     main()
