@@ -23,7 +23,7 @@ class Cell(object):
         for vl in self.value_lines:
             tmp_dv = 0
             for v in vl:
-                tmp_dv += int(len(str(v).encode('utf-8')) / 1.5) if ord(v) > 256 else len(v)
+                tmp_dv += int(len(v.encode('utf-8')) / 1.5) if ord(v) > 256 else len(v)
             self.value_lines_len.append(tmp_dv)
         self.width = max(self.value_lines_len)
         # 画图时候的长宽
@@ -58,12 +58,16 @@ class Table(object):
             row = self.data[row_index]
             row_cells = []
             col_index = 0
-            while col_index < len(row):
+            while col_index < len(row) - 1:
                 cell = Cell(row[col_index])
                 row_cells.append(cell)
-                row_width[row_index].append([col_index, cell.draw_width])
+                row_width[row_index].append([col_index, cell.draw_width + 3])
                 row_height[row_index].append(cell.draw_height)
                 col_index += 1
+            cell = Cell(row[-1])
+            row_cells.append(cell)
+            row_width[row_index].append([col_index, cell.draw_width + 4])
+            row_height[row_index].append(cell.draw_height)
             cells.append(row_cells)
             row_index += 1
         max_row_width = max([sum([j[1] for j in i]) for i in row_width])
@@ -80,14 +84,16 @@ class Table(object):
                 less_c = []
                 for current_row in rest_cells:
                     last_cell = current_row
-                    if current_row[1] >= average:
-                        cells[row_index][current_row[0]].draw_width = current_row[1]
-                        row_sum += current_row[1]
-                        tmp_max -= current_row[1]
+                    cl = current_row[1]
+                    if cl >= average:
+                        cells[row_index][current_row[0]].draw_width = cl
+                        row_sum += cl
+                        tmp_max -= cl
                     else:
                         less_c.append(current_row)
                 if len(less_c) == len(rest_cells):
                     for i in less_c:
+                        last_cell = i
                         cells[row_index][i[0]].draw_width = average
                         row_sum += average
                     break
@@ -115,23 +121,25 @@ class Table(object):
             self.cells = self._cal_no_align_cells()
         else:
             return self.no_align_graph
-        no_align_graph = CELL_BOUNDARY
+        no_align_graph = ''
         # 封第一行顶部
         final_row_width = [[i.draw_width for i in j] for j in self.cells]
-        for i in final_row_width[0]:
-            no_align_graph += ROW_META * (i + 2) + CELL_BOUNDARY
-        no_align_graph += ROW_BOUNDARY
+        for i in final_row_width[0][:-1]:
+            no_align_graph += CELL_BOUNDARY + ROW_META * (i - 1)
+        i = final_row_width[0][-1]
+        no_align_graph += CELL_BOUNDARY + ROW_META * (i - 2) + CELL_BOUNDARY + ROW_BOUNDARY
         row_index = 0
         while row_index < self.rows:
             # 先画空隙
             row_cells = self.cells[row_index]
-            bottom = CELL_BOUNDARY
-            col_space = COLUMN_META
-            for i in final_row_width[row_index]:
-                col_space += PADDING * (i + 2) + COLUMN_META
-                bottom += ROW_META * (i + 2) + CELL_BOUNDARY
-            col_space += ROW_BOUNDARY
-            bottom += ROW_BOUNDARY
+            bottom = ''
+            col_space = ''
+            for i in final_row_width[row_index][:-1]:
+                col_space += COLUMN_META + PADDING * (i - 1)
+                bottom += CELL_BOUNDARY + ROW_META * (i - 1)
+            i = final_row_width[row_index][-1]
+            col_space += COLUMN_META + PADDING * (i - 2) + COLUMN_META + ROW_BOUNDARY
+            bottom += CELL_BOUNDARY + ROW_META * (i - 2) + CELL_BOUNDARY + ROW_BOUNDARY
 
             no_align_graph += col_space
 
@@ -140,11 +148,14 @@ class Table(object):
             d_height = row_cells[0].draw_height
             hindex = 0
             while hindex < d_height:
-                for cell in row_cells:
+                for cell in row_cells[:-1]:
                     no_align_graph += COLUMN_META + PADDING + cell.value_lines[hindex]
-                    right_padding_count = cell.draw_width - cell.value_lines_len[hindex]
-                    no_align_graph += PADDING * right_padding_count + PADDING
-                no_align_graph += COLUMN_META + ROW_BOUNDARY
+                    right_padding_count = cell.draw_width - 2 - cell.value_lines_len[hindex]
+                    no_align_graph += PADDING * right_padding_count
+                cell = row_cells[-1]
+                no_align_graph += COLUMN_META + PADDING + cell.value_lines[hindex]
+                right_padding_count = cell.draw_width - 4 - cell.value_lines_len[hindex]
+                no_align_graph += PADDING * right_padding_count + PADDING + COLUMN_META + ROW_BOUNDARY
                 hindex += 1
             no_align_graph += col_space
             no_align_graph += bottom
@@ -192,7 +203,7 @@ class Table(object):
             row_index += 1
         return cells, max_col_width, max_row_height
 
-    def draw(self, redraw=False):
+    def draw_align(self, redraw=False):
         if redraw is True:
             self.cells = []
             self.graph = ''
@@ -251,7 +262,7 @@ def main():
     for data in datas:
         t = Table(data=data)
         print(t.draw_no_align())
-        print(t.draw())
+        print(t.draw_align())
     with open('draw_doc_table_test', 'w') as f:
         t.draw_to_file(f)
 
