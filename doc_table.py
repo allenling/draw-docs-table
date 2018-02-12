@@ -44,6 +44,7 @@ class Table(object):
         self.data = data
         self.cells = []
         self.graph = ''
+        self.no_align_cells = []
         self.no_align_graph = ''
         self.rows = len(self.data)
         self.max_cols = max([len(i) for i in data])
@@ -115,15 +116,15 @@ class Table(object):
 
     def draw_no_align(self, redraw=False):
         if redraw is True:
-            self.cells = []
+            self.no_align_cells = []
             self.no_align_graph = ''
         if not self.no_align_graph:
-            self.cells = self._cal_no_align_cells()
+            self.no_align_cells = self._cal_no_align_cells()
         else:
             return self.no_align_graph
         no_align_graph = ''
         # 封第一行顶部
-        final_row_width = [[i.draw_width for i in j] for j in self.cells]
+        final_row_width = [[i.draw_width for i in j] for j in self.no_align_cells]
         for i in final_row_width[0][:-1]:
             no_align_graph += CELL_BOUNDARY + ROW_META * (i - 1)
         i = final_row_width[0][-1]
@@ -131,7 +132,7 @@ class Table(object):
         row_index = 0
         while row_index < self.rows:
             # 先画空隙
-            row_cells = self.cells[row_index]
+            row_cells = self.no_align_cells[row_index]
             bottom = ''
             col_space = ''
             for i in final_row_width[row_index][:-1]:
