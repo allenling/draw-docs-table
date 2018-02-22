@@ -9,9 +9,10 @@ python3.x
 
 3. 所以, 如果你的显示设备是使用2个宽度来显示unicode的话, 是可以对齐的, 比如配置utf8支持的vim和配置了utf8的ubuntu的终端.
 
-4. 有些设备unicode是不能和ascii对齐的, 两者宽度不一样(一般是3个汉字占5个位置, 也就是我们三这个3个汉字需要5个ascii字符才能对齐), 比如kubuntu中的kate编辑器, 2提到的eclipse. 需要对齐的话, 必须ascii也是utf-8编码才行, 也就是全角的字母, 这样和汉字是可以一一对齐的.
+4. 有些设备unicode是不能和ascii对齐的, 两者宽度不一样(一般是3个汉字占5个位置, 也就是我们三这个3个汉字需要5个ascii字符才能对齐), 比如kubuntu中的kate编辑器, 2提到的eclipse.
+   需要对齐的话, 必须ascii也是utf-8编码才行, 也就是全角的字母, 这样和汉字是可以一一对齐的.
 
-5. 所以注意一下你打印时候的终端是什么.
+5. 字体选择一般需要选择等宽字体(monospace, 请参考其他资料), 所以注意一下你打印时候的终端是什么, 以及字体是否是等宽字体(建议使用Inconsolata或者Noto Mono).
 
 6. draw_align是补全列的
 
@@ -25,4 +26,5 @@ python3.x
 ....
 
 .. image:: https://github.com/allenling/draw-docs-table/blob/master/example_img/Selection_007.png
+
 
